@@ -1,0 +1,119 @@
+-- יצירת סיקוונסים
+CREATE SEQUENCE CITY_ID_SEQ START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE SCHOOL_ID_SEQ START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE STUDENT_ID_SEQ START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE TEST_ID_SEQ START WITH 1 INCREMENT BY 1;
+
+-- יצירת טבלה ערים
+CREATE TABLE naorBony_cities (
+    Id INT DEFAULT CITY_ID_SEQ.NEXTVAL PRIMARY KEY,
+    CityName VARCHAR2(255),
+    Location VARCHAR2(255)
+);
+
+-- יצירת טבלת בתי ספר
+CREATE TABLE naorBony_schools (
+    Id INT DEFAULT SCHOOL_ID_SEQ.NEXTVAL PRIMARY KEY,
+    SchoolName VARCHAR2(255),
+    City INT REFERENCES naorBony_cities(Id)
+);
+
+-- יצירת טבלת תלמידים
+CREATE TABLE naorBony_students (
+    Id INT DEFAULT STUDENT_ID_SEQ.NEXTVAL PRIMARY KEY,
+    FirstName VARCHAR2(255),
+    LastName VARCHAR2(255),
+    School INT REFERENCES naorBony_schools(Id)
+);
+
+-- יצירת טבלת מבחנים
+CREATE TABLE naorBony_tests (
+    Id INT DEFAULT TEST_ID_SEQ.NEXTVAL PRIMARY KEY,
+    SubjectName VARCHAR2(255),
+    Grade INT,
+    TestDate DATE,
+    School INT REFERENCES naorBony_schools(Id),
+    Student INT REFERENCES naorBony_students(Id)
+);
+
+-- הכנסת נתונים לטבלת ערים
+INSERT INTO naorBony_cities (CityName, Location) VALUES ('חיפה', 'צפון');
+INSERT INTO naorBony_cities (CityName, Location) VALUES ('אחד', 'מרכז');
+INSERT INTO naorBony_cities (CityName, Location) VALUES ('שנים', 'מרכז');
+INSERT INTO naorBony_cities (CityName, Location) VALUES ('חמור', 'מרכז');
+INSERT INTO naorBony_cities (CityName, Location) VALUES ('תל אביב', 'מרכז');
+INSERT INTO naorBony_cities (CityName, Location) VALUES ('ראש העין', 'צפון');
+INSERT INTO naorBony_cities (CityName, Location) VALUES ('אפושיהו', 'צפון');
+
+-- הכנסת נתונים לטבלת בתי ספר
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('הריאלי', 1);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('לאומנויות', 5);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('עירוני א', 2);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('עירוני ב', 6);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('סתם', 3);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('יוצר', 4);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('לי', 1);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('איזשהו', 5);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('שמות', 3);
+INSERT INTO naorBony_schools (SchoolName, City) VALUES ('טרללרוטרללה', 5);
+
+-- הכנסת נתונים לטבלת תלמידים
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('דפנה', 'ממון', 1);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('שאול', 'בנאי', 1);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('שמעון', 'בוסקילה', 3);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('לא', 'אמון', 3);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('אכפת', 'לממון', 2);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('לי', 'קממון', 2);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('מזה', 'בממון', 4);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('בכלל', 'סממון', 4);
+INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('שימפנזיני', 'תפוזיני', 10);
+
+-- הכנסת נתונים לטבלת מבחנים
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מתמטיקה', 95, TO_DATE('1995-03-01','YYYY-MM-DD'), 1, 1);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('אנגלית', 88, TO_DATE('1990-03-15','YYYY-MM-DD'), 1, 1);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('היסטוריה', 92, TO_DATE('1992-04-01','YYYY-MM-DD'), 1, 1);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מדעים', 90, TO_DATE('1991-04-20','YYYY-MM-DD'), 1, 1);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ספרות', 85, TO_DATE('2024-05-10','YYYY-MM-DD'), 1, 1);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('אנגלית', 78, TO_DATE('2024-03-05','YYYY-MM-DD'), 1, 2);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מתמטיקה', 82, TO_DATE('2024-03-20','YYYY-MM-DD'), 1, 2);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מדעים', 88, TO_DATE('2024-04-05','YYYY-MM-DD'), 1, 2);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('גיאוגרפיה', 80, TO_DATE('2024-04-25','YYYY-MM-DD'), 1, 2);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ביולוגיה', 90, TO_DATE('2024-03-10','YYYY-MM-DD'), 3, 3);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('אנגלית', 87, TO_DATE('2024-03-22','YYYY-MM-DD'), 3, 3);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מדעים', 84, TO_DATE('2024-04-08','YYYY-MM-DD'), 3, 3);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ספרות', 79, TO_DATE('2024-04-29','YYYY-MM-DD'), 3, 3);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('פיזיקה', 85, TO_DATE('2024-05-15','YYYY-MM-DD'), 3, 3);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('היסטוריה', 70, TO_DATE('2024-03-12','YYYY-MM-DD'), 3, 4);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מתמטיקה', 75, TO_DATE('2024-03-26','YYYY-MM-DD'), 3, 4);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ביולוגיה', 80, TO_DATE('2024-04-10','YYYY-MM-DD'), 3, 4);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('כימיה', 78, TO_DATE('2024-05-02','YYYY-MM-DD'), 3, 4);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ספרות', 88, TO_DATE('2024-03-14','YYYY-MM-DD'), 2, 5);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('גיאוגרפיה', 92, TO_DATE('2024-04-03','YYYY-MM-DD'), 2, 5);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מתמטיקה', 85, TO_DATE('2024-04-22','YYYY-MM-DD'), 2, 5);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('פיזיקה', 80, TO_DATE('2024-05-11','YYYY-MM-DD'), 2, 5);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('כימיה', 78, TO_DATE('2024-03-18','YYYY-MM-DD'), 2, 6);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('אנגלית', 90, TO_DATE('2024-04-01','YYYY-MM-DD'), 2, 6);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ספרות', 84, TO_DATE('2024-04-19','YYYY-MM-DD'), 2, 6);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מדעים', 82, TO_DATE('2024-05-08','YYYY-MM-DD'), 2, 6);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('פיזיקה', 90, TO_DATE('2024-03-20','YYYY-MM-DD'), 4, 7);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('כימיה', 87, TO_DATE('2024-04-05','YYYY-MM-DD'), 4, 7);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ביולוגיה', 85, TO_DATE('2024-04-23','YYYY-MM-DD'), 4, 7);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מתמטיקה', 88, TO_DATE('2024-05-12','YYYY-MM-DD'), 4, 7);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מדעים', 80, TO_DATE('2024-03-25','YYYY-MM-DD'), 4, 8);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('אנגלית', 85, TO_DATE('2024-04-09','YYYY-MM-DD'), 4, 8);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('היסטוריה', 82, TO_DATE('2024-04-28','YYYY-MM-DD'), 4, 8);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('ספרות', 79, TO_DATE('2024-05-15','YYYY-MM-DD'), 4, 8);
+
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מתמטיקה', 77, TO_DATE('2024-03-28','YYYY-MM-DD'), 10, 9);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('אנגלית', 83, TO_DATE('2024-04-13','YYYY-MM-DD'), 10, 9);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מדעים', 79, TO_DATE('2024-05-01','YYYY-MM-DD'), 10, 9);
+INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('היסטוריה', 75, TO_DATE('2024-05-20','YYYY-MM-DD'), 10, 9);
+
+
