@@ -1,182 +1,192 @@
 -- 1
 -- a
-SELECT FirstName 
-FROM naorBony_students ;
+SELECT firstName 
+FROM naorBony_students;
 
---b
-SELECT SchoolName 
-FROM naorBony_schools ;
+-- b
+SELECT schoolName 
+FROM naorBony_schools;
 
 -- c
-SELECT Grade , SubjectName AS  Subject
+SELECT grade, subject 
 FROM naorBony_tests
-WHERE Grade > 55 ;
+WHERE grade > 55;
 
---d
-SELECT FirstName || ' ' || LastName AS FullName
+-- d
+SELECT firstName || ' ' || lastName AS fullName
 FROM naorBony_students 
-WHERE SUBSTR(LastName, 1, 1) = 'ב';
+WHERE SUBSTR(lastName, 1, 1) = 'ב';
 
 -- e
-SELECT FirstName || ' ' || LastName AS FullName
+SELECT firstName || ' ' || lastName AS fullName
 FROM naorBony_students 
-ORDER BY FullName ASC;
+ORDER BY fullName ASC;
 
---2
---a
-SELECT naorBony_students.FirstName || ' ' || naorBony_students.LastName AS FullName,
- naorBony_schools.SchoolName AS School 
-FROM naorBony_students 
-LEFT JOIN naorBony_schools ON naorBony_students.School  = naorBony_schools.Id 
-ORDER BY School, FullName ASC;
+-- 2
+-- a
+SELECT students.firstName || ' ' || students.lastName AS fullName,
+       schools.schoolName AS school 
+FROM naorBony_students students
+LEFT JOIN naorBony_schools schools ON students.school = schools.id 
+ORDER BY school, fullName ASC;
 
---b
-SELECT Grade , TestDate
+-- b
+SELECT grade, testDate
 FROM naorBony_tests
-WHERE TestDate >=  date'1995-01-01';
+WHERE testDate >= DATE '1995-01-01';
 
---c
-SELECT students.FirstName || ' ' || students.LastName AS FullName
+-- c
+SELECT students.firstName || ' ' || students.lastName AS fullName
 FROM naorBony_students students
-INNER JOIN naorBony_schools schools ON students.School  = schools.Id 
-INNER JOIN naorBony_cities cities ON schools.city = cities.Id 
-WHERE schools.SchoolName = 'הריאלי' AND cities.CityName = 'חיפה';
+INNER JOIN naorBony_schools schools ON students.school = schools.id 
+INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+WHERE schools.schoolName = 'הריאלי' AND cities.cityName = 'חיפה';
 
---d
-SELECT SchoolName
+-- d
+SELECT schoolName
 FROM naorBony_schools schools
-INNER JOIN naorBony_cities cities ON schools.city = cities.Id 
-WHERE  cities.Location = 'מרכז';
+INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+WHERE cities.location = 'מרכז';
 
---e
-SELECT schools.SchoolName, cities.CityName AS City, cities.Location AS Location
+-- e
+SELECT schools.schoolName, cities.cityName AS city, cities.location AS location
 FROM naorBony_schools schools
-INNER JOIN naorBony_cities cities ON schools.city = cities.Id 
-WHERE  cities.Location = 'מרכז';
+INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+WHERE cities.location = 'מרכז';
 
---f
-SELECT AVG(Grade)
+-- f
+SELECT AVG(grade)
 FROM naorBony_students students
-INNER JOIN naorBony_tests tests ON students.Id  = tests.Student 
-WHERE students.FirstName = 'דפנה' ;
+INNER JOIN naorBony_tests tests ON students.id = tests.student 
+WHERE students.firstName = 'דפנה';
 
---g
-SELECT schools.SchoolName AS School, students.FirstName || ' ' || students.LastName AS FullName,
- Grade, SubjectName AS Subject
+-- g
+SELECT schools.schoolName AS school,
+       students.firstName || ' ' || students.lastName AS fullName,
+       grade, subject 
 FROM naorBony_students students
-INNER JOIN naorBony_schools schools ON students.School  = schools.Id 
-INNER JOIN naorBony_cities cities ON schools.city = cities.Id 
-INNER JOIN naorBony_tests tests ON students.Id  = tests.Student 
-WHERE cities.Location = 'מרכז';
+INNER JOIN naorBony_schools schools ON students.school = schools.id 
+INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+INNER JOIN naorBony_tests tests ON students.id = tests.student 
+WHERE cities.location = 'מרכז';
 
---3
---a
-SELECT  students.FirstName || ' ' || students.LastName AS FullName,
- AVG(Grade)
+-- 3
+-- a
+SELECT students.firstName || ' ' || students.lastName AS fullName,
+       AVG(grade) AS avg_grade
 FROM naorBony_students students
-INNER JOIN naorBony_schools schools ON students.School  = schools.Id 
-INNER JOIN naorBony_tests tests ON students.Id  = tests.Student 
-GROUP BY FullName;
+INNER JOIN naorBony_tests tests ON students.id = tests.student 
+GROUP BY students.firstName, students.lastName;
 
---b
-SELECT schools.SchoolName AS School, AVG(Grade)
+-- b
+SELECT schools.schoolName AS school, AVG(grade)
 FROM naorBony_schools schools
-INNER JOIN naorBony_tests tests ON schools.Id  = tests.School 
-GROUP BY schools.SchoolName;
+INNER JOIN naorBony_tests tests ON schools.id = tests.school 
+GROUP BY schools.schoolName;
 
---c
-SELECT schools.SchoolName AS SchoolName, AVG(Grade)
+-- c
+SELECT schools.schoolName AS schoolName, AVG(grade)
 FROM naorBony_schools schools
-INNER JOIN naorBony_tests tests ON schools.Id  = tests.School 
-WHERE SchoolName = 'עירוני א' AND SubjectName = 'ביולוגיה'
-GROUP BY schools.SchoolName;
+INNER JOIN naorBony_tests tests ON schools.id = tests.school 
+WHERE schools.schoolName = 'עירוני א' AND tests.subject = 'ביולוגיה'
+GROUP BY schools.schoolName;
 
---d
-SELECT schools.SchoolName AS School, AVG(Grade)
+-- d
+SELECT schools.schoolName AS school, AVG(grade)
 FROM naorBony_schools schools
-INNER JOIN naorBony_tests tests ON schools.Id  = tests.School 
-WHERE SubjectName = 'כימיה'
-GROUP BY schools.SchoolName
-ORDER BY AVG(Grade) DESC;
+INNER JOIN naorBony_tests tests ON schools.id = tests.school 
+WHERE tests.subject = 'כימיה'
+GROUP BY schools.schoolName
+ORDER BY AVG(grade) DESC;
 
---e
-SELECT schools.SchoolName AS School, AVG(tests.Grade) AS Avg_Grade
+-- e
+SELECT schools.schoolName AS school, AVG(tests.grade) AS avg_grade
 FROM naorBony_schools schools
 LEFT JOIN naorBony_tests tests 
-    ON schools.Id = tests.School AND tests.SubjectName = 'כימיה'
-GROUP BY schools.SchoolName
-ORDER BY Avg_Grade DESC NULLS LAST;
+    ON schools.id = tests.school AND tests.subject = 'כימיה'
+GROUP BY schools.schoolName
+ORDER BY avg_grade DESC NULLS LAST;
 
---f
-SELECT AVG(Grade) AS Avg_Grade , students.FirstName || ' ' || students.LastName AS FullName
+-- f
+SELECT AVG(grade) AS avg_grade , students.firstName || ' ' || students.lastName AS fullName
 FROM naorBony_students students
-INNER JOIN naorBony_tests tests ON students.Id  = tests.Student 
-GROUP BY students.FirstName, students.LastName
-ORDER BY Avg_Grade DESC
+INNER JOIN naorBony_tests tests ON students.id = tests.student 
+GROUP BY students.firstName, students.lastName
+ORDER BY avg_grade DESC
 FETCH FIRST 1 ROWS ONLY;
 
---g
-SELECT AVG(Grade) AS Avg_Grade , students.FirstName || ' ' || students.LastName AS FullName
+-- g
+SELECT AVG(grade) AS avg_grade , students.firstName || ' ' || students.lastName AS fullName
 FROM naorBony_students students
-INNER JOIN naorBony_tests tests ON students.Id  = tests.Student
-INNER JOIN naorBony_schools schools ON students.School  = schools.Id 
-WHERE schools.SchoolName = 'עירוני ב' AND tests.SubjectName = 'מתמטיקה'
-GROUP BY students.FirstName, students.LastName
-ORDER BY Avg_Grade DESC
+INNER JOIN naorBony_tests tests ON students.id = tests.student
+INNER JOIN naorBony_schools schools ON students.school = schools.id 
+WHERE schools.schoolName = 'עירוני ב' AND tests.subject = 'מתמטיקה'
+GROUP BY students.firstName, students.lastName
+ORDER BY avg_grade DESC
 FETCH FIRST 1 ROWS ONLY;
 
---h
-SELECT MAX(Avg_Grade) AS max_avg, schoolName
-FROM ( SELECT AVG(Grade) AS Avg_Grade , students.FirstName || ' ' || students.LastName AS FullName,
-	schools.SchoolName as schoolName
+-- h
+SELECT MAX(avg_grade) AS max_avg, schoolName
+FROM (
+    SELECT AVG(grade) AS avg_grade, 
+           students.firstName || ' ' || students.lastName AS fullName,
+	       schools.schoolName AS schoolName
 	FROM naorBony_students students
-	INNER JOIN naorBony_tests tests ON students.Id  = tests.Student
-	INNER JOIN naorBony_schools schools ON students.School  = schools.Id  
-	GROUP BY students.FirstName, students.LastName, schools.SchoolName
-	ORDER BY Avg_Grade DESC )
+	INNER JOIN naorBony_tests tests ON students.id = tests.student
+	INNER JOIN naorBony_schools schools ON students.school = schools.id  
+	GROUP BY students.firstName, students.lastName, schools.schoolName
+	ORDER BY avg_grade DESC 
+)
 GROUP BY schoolName
 ORDER BY max_avg ASC;
 
---4
---a
-INSERT INTO naorBony_students (FirstName, LastName, School) VALUES ('תלמיד', 'חדש', 1);
+-- 4
+-- a
+INSERT INTO naorBony_students (firstName, lastName, school) VALUES ('תלמיד', 'חדש', 1);
 
-INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('מדעים', 79, TO_DATE('2024-05-01','YYYY-MM-DD'), 1, 10);
-INSERT INTO naorBony_tests (SubjectName, Grade, TestDate, School, Student) VALUES ('היסטוריה', 75, TO_DATE('2024-05-20','YYYY-MM-DD'), 1, 10);
+INSERT INTO naorBony_tests (subject, grade, testDate, school, student) 
+VALUES ('מדעים', 79, TO_DATE('2024-05-01','YYYY-MM-DD'), 1, 10);
 
---b
-DELETE FROM naorBony_tests WHERE SubjectName='אנגלית' AND Grade < 56;
+INSERT INTO naorBony_tests (subject, grade, testDate, school, student) 
+VALUES ('היסטוריה', 75, TO_DATE('2024-05-20','YYYY-MM-DD'), 1, 10);
 
---c
+-- b
+DELETE FROM naorBony_tests 
+WHERE subject = 'אנגלית' AND grade < 56;
+
+-- c
 UPDATE naorBony_tests
-SET Grade = CASE
-    WHEN Grade >= 3 THEN Grade - 3
+SET grade = CASE
+    WHEN grade >= 3 THEN grade - 3
     ELSE 0
 END;
 
---d 
+-- d 
 UPDATE naorBony_tests
-SET Grade = CASE
-    WHEN Grade <=97 THEN Grade + 3
+SET grade = CASE
+    WHEN grade <= 97 THEN grade + 3
     ELSE 100   
 END;
 
---e
-CREATE VIEW SchoolFromNorth AS
-SELECT SchoolName
+-- e
+CREATE VIEW schoolFromNorth AS
+SELECT schoolName, id
 FROM naorBony_schools schools
-INNER JOIN naorBony_cities cities ON schools.city = cities.Id 
-WHERE  cities.Location = 'צפון';
+INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+WHERE cities.location = 'צפון';
 
+--f
+CREATE VIEW studentByAvg AS
+SELECT students.firstName || ' ' || students.lastName AS fullName,
+       AVG(grade) AS avg_grade, 
+       students.school
+FROM naorBony_students students
+INNER JOIN naorBony_tests tests ON students.id = tests.student 
+GROUP BY students.firstName, students.lastName, students.school
+HAVING AVG(grade) > 67;
 
-
-
-
-
-
-
-
-
-
-
-
+--f
+SELECT sba.fullName, sba.avg_grade
+FROM studentByAvg sba
+INNER JOIN schoolFromNorth sfn ON sba.school = sfn.id;
+ORDER BY sba.avg_grade DESC
