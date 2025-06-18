@@ -1,0 +1,29 @@
+--1
+ALTER TABLE naorBony_cities
+ADD Status INT DEFAULT 1;
+
+--2
+CREATE OR REPLACE PACKAGE naorBony_city_updater IS
+  PROCEDURE naorBony_update_city;
+END naorBony_city_updater;
+
+CREATE OR REPLACE PACKAGE BODY naorBony_city_updater IS
+  PROCEDURE naorBony_update_city IS
+  BEGIN
+    UPDATE naorBony_cities
+    SET Status = 2
+    WHERE Status = 1;
+  END;
+END naorBony_city_updater;
+
+--3
+BEGIN
+  DBMS_SCHEDULER.CREATE_JOB (
+    job_name        => 'update_city_status_job',
+    job_type        => 'STORED_PROCEDURE',
+    job_action      => 'naorBony_city_updater.naorBony_update_city',
+    start_date      => SYSTIMESTAMP,
+    repeat_interval => 'FREQ=SECONDLY; INTERVAL=30',
+    enabled         => TRUE
+  );
+END;
