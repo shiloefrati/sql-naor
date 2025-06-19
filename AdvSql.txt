@@ -6,6 +6,7 @@ ADD Status INT DEFAULT 1;
 CREATE OR REPLACE PACKAGE naorBony_city_updater IS
   PROCEDURE naorBony_update_city;
 END naorBony_city_updater;
+/
 
 CREATE OR REPLACE PACKAGE BODY naorBony_city_updater IS
   PROCEDURE naorBony_update_city IS
@@ -15,6 +16,7 @@ CREATE OR REPLACE PACKAGE BODY naorBony_city_updater IS
     WHERE Status = 1;
   END;
 END naorBony_city_updater;
+/
 
 --3
 BEGIN
@@ -26,4 +28,6 @@ BEGIN
     repeat_interval => 'FREQ=SECONDLY; INTERVAL=30',
     enabled         => TRUE
   );
+COMMIT;
 END;
+/
