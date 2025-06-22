@@ -39,19 +39,19 @@ WHERE testDate >= DATE '1995-01-01';
 SELECT students.firstName || ' ' || students.lastName AS fullName
 FROM naorBony_students students
 INNER JOIN naorBony_schools schools ON students.school = schools.id 
-INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+INNER JOIN naorBony_cities cities ON schools.cityId = cities.id 
 WHERE schools.schoolName = 'הריאלי' AND cities.cityName = 'חיפה';
 
 -- d
 SELECT schoolName
 FROM naorBony_schools schools
-INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+INNER JOIN naorBony_cities cities ON schools.cityId = cities.id 
 WHERE cities.location = 'מרכז';
 
 -- e
 SELECT schools.schoolName, cities.cityName AS city, cities.location AS location
 FROM naorBony_schools schools
-INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+INNER JOIN naorBony_cities cities ON schools.cityId = cities.id 
 WHERE cities.location = 'מרכז';
 
 -- f
@@ -66,7 +66,7 @@ SELECT schools.schoolName AS school,
        grade, subject 
 FROM naorBony_students students
 INNER JOIN naorBony_schools schools ON students.school = schools.id 
-INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+INNER JOIN naorBony_cities cities ON schools.cityId = cities.id 
 INNER JOIN naorBony_tests tests ON students.id = tests.student 
 WHERE cities.location = 'מרכז';
 
@@ -172,7 +172,7 @@ END;
 CREATE VIEW schoolFromNorth AS
 SELECT schoolName, id
 FROM naorBony_schools schools
-INNER JOIN naorBony_cities cities ON schools.city = cities.id 
+INNER JOIN naorBony_cities cities ON schools.cityId = cities.id 
 WHERE cities.location = 'צפון';
 
 --f

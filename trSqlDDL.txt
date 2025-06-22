@@ -15,7 +15,7 @@ CREATE TABLE naorBony_cities (
 CREATE TABLE naorBony_schools (
     id INT DEFAULT SCHOOL_ID_SEQ.NEXTVAL PRIMARY KEY,
     schoolName VARCHAR2(40),
-    city INT REFERENCES naorBony_cities(id)
+    cityId INT REFERENCES naorBony_cities(id)
 );
 
 -- יצירת טבלת תלמידים
@@ -46,16 +46,16 @@ INSERT INTO naorBony_cities (cityName, location) VALUES ('ראש העין', 'צ�
 INSERT INTO naorBony_cities (cityName, location) VALUES ('אפושיהו', 'צפון');
 
 -- הכנסת נתונים לטבלת בתי ספר
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('הריאלי', 1);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('לאומנויות', 5);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('עירוני א', 2);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('עירוני ב', 6);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('סתם', 3);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('יוצר', 4);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('לי', 1);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('איזשהו', 5);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('שמות', 3);
-INSERT INTO naorBony_schools (schoolName, city) VALUES ('טרללרוטרללה', 5);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('הריאלי', 1);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('לאומנויות', 5);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('עירוני א', 2);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('עירוני ב', 6);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('סתם', 3);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('יוצר', 4);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('לי', 1);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('איזשהו', 5);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('שמות', 3);
+INSERT INTO naorBony_schools (schoolName, cityId) VALUES ('טרללרוטרללה', 5);
 
 -- הכנסת נתונים לטבלת תלמידים
 INSERT INTO naorBony_students (firstName, lastName, school) VALUES ('דפנה', 'ממון', 1);
