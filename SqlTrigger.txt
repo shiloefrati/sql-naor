@@ -1,0 +1,40 @@
+--1
+ALTER TABLE naorBony_schools
+ADD NumberOfStudents INT DEFAULT 0;
+
+--2
+CREATE OR REPLACE TRIGGER SCHOOL_STUDENT_COUNTER  
+AFTER INSERT OR UPDATE OF School OR DELETE
+ON naorBony_students
+FOR EACH ROW 
+BEGIN
+  IF INSERTING THEN
+    UPDATE naorBony_schools
+    SET NumberOfStudents = NumberOfStudents + 1
+    WHERE Id = :NEW.School;
+
+  ELSIF DELETING THEN
+    UPDATE naorBony_schools
+    SET NumberOfStudents = 
+      CASE 
+        WHEN NumberOfStudents > 0 THEN NumberOfStudents - 1 
+        ELSE 0 
+      END
+    WHERE Id = :OLD.School;
+
+  ELSIF UPDATING THEN
+    IF :OLD.School != :NEW.School THEN
+      UPDATE naorBony_schools
+      SET NumberOfStudents = 
+        CASE 
+          WHEN NumberOfStudents > 0 THEN NumberOfStudents - 1 
+          ELSE 0 
+        END
+      WHERE Id = :OLD.School;
+
+      UPDATE naorBony_schools
+      SET NumberOfStudents = NumberOfStudents + 1
+      WHERE Id = :NEW.School;
+    END IF;
+  END IF;
+END;
